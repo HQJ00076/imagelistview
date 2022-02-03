@@ -582,7 +582,7 @@ namespace Manina.Windows.Forms
                         mImageListView.SelectedItems.Clear(false);
                         HoveredItem.mSelected = true;
                     }
-                    else if (ControlKey)
+                    else if (ControlKey && !ShiftKey)
                     {
                         HoveredItem.mSelected = !HoveredItem.mSelected;
                     }
@@ -591,31 +591,11 @@ namespace Manina.Windows.Forms
                         int startIndex = 0;
                         if (mImageListView.SelectedItems.Count != 0)
                         {
-                            startIndex = mImageListView.SelectedItems[0].Index;
-                            mImageListView.SelectedItems.Clear(false);
+                            startIndex = mImageListView.Items.FocusedItem.Index;
                         }
                         int endIndex = HoveredItem.Index;
-                        if (mImageListView.ScrollOrientation == ScrollOrientation.VerticalScroll)
-                        {
-                            int startRow = Math.Min(startIndex, endIndex) / mImageListView.layoutManager.Cols;
-                            int endRow = Math.Max(startIndex, endIndex) / mImageListView.layoutManager.Cols;
-                            int startCol = Math.Min(startIndex, endIndex) % mImageListView.layoutManager.Cols;
-                            int endCol = Math.Max(startIndex, endIndex) % mImageListView.layoutManager.Cols;
-
-                            for (int row = startRow; row <= endRow; row++)
-                            {
-                                for (int col = startCol; col <= endCol; col++)
-                                {
-                                    int index = row * mImageListView.layoutManager.Cols + col;
-                                    mImageListView.Items[index].mSelected = true;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            for (int i = Math.Min(startIndex, endIndex); i <= Math.Max(startIndex, endIndex); i++)
-                                mImageListView.Items[i].mSelected = true;
-                        }
+                        for (int i = Math.Min(startIndex, endIndex); i <= Math.Max(startIndex, endIndex); i++)
+                            mImageListView.Items[i].mSelected = true;
                     }
                     else
                     {
